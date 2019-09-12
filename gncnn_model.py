@@ -36,7 +36,7 @@ class GNCNN(nn.Module):
 		out = self.avg_pool3(gaussian(self.conv3(out)))
 		out = self.avg_pool4(gaussian(self.conv4(out)))
 		out = self.avg_pool5(gaussian(self.conv5(out)))
-		out = out.reshape(out.size(0), -1)
+		out = out.view(out.size(0), -1)
 		out = F.relu(self.fc1(out))
 		out = F.relu(self.fc2(out))
 		out = self.fc3(out)
