@@ -3,3 +3,14 @@ Pytorch implementation of [GNCNN: Deep Learning for Steganalysis via Convolution
 
 The model train/validation/test accuracy has also been plotted when training on S-UNIWARD 0.4bpp.
 
+<table>
+  <tr>
+    <td align="center">GNCNN</td>
+     <td align="center">Train/Valid/Test Accuracy</td>
+    
+  </tr>
+  <tr>
+    <td valign="top"><img src="gncnn.png"></td>
+    <td valign="top"><img src="train_valid_acc.png"></td>
+  </tr>
+ </table>
