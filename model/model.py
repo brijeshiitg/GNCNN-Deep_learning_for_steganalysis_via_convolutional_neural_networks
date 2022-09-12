@@ -28,16 +28,17 @@ class ImageProcessing(nn.Module):
 
         super().__init__()
         # pylint: disable=E1101
-        self.kv_filter = torch.tensor(
-            [
-                [-1.0, 2.0, -2.0, 2.0, -1.0],
-                [2.0, -6.0, 8.0, -6.0, 2.0],
-                [-2.0, 8.0, -12.0, 8.0, -2.0],
-                [2.0, -6.0, 8.0, -6.0, 2.0],
-                [-1.0, 2.0, -2.0, 2.0, -1.0],
-            ],
-        ).view(
-            1, 1, 5, 5
+        self.kv_filter = (
+            torch.tensor(
+                [
+                    [-1.0, 2.0, -2.0, 2.0, -1.0],
+                    [2.0, -6.0, 8.0, -6.0, 2.0],
+                    [-2.0, 8.0, -12.0, 8.0, -2.0],
+                    [2.0, -6.0, 8.0, -6.0, 2.0],
+                    [-1.0, 2.0, -2.0, 2.0, -1.0],
+                ],
+            ).view(1, 1, 5, 5)
+            / 12.0
         )  # pylint: enable=E1101
 
     def forward(self, inp: Tensor) -> Tensor:
@@ -88,8 +89,8 @@ class GNCNN(nn.Module):
             nn.Linear(in_features=128, out_features=128),
             nn.ReLU(inplace=True),
             nn.Linear(in_features=128, out_features=2),
+            nn.LogSoftmax(dim=1),
         )
-        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, image: Tensor) -> Tensor:
         """Returns logit for the given tensor."""
@@ -102,12 +103,11 @@ class GNCNN(nn.Module):
         out = self.layer5(out)
         out = out.view(out.size(0), -1)
         out = self.fully_connected(out)
-        out = self.softmax(out)
         return out
 
 
-# if __name__ == "__main__":
-#     net = GNCNN()
-#     print(net)
-#     inp_image = torch.randn((1, 1, 256, 256))
-#     print(net(inp_image))
+if __name__ == "__main__":
+    net = GNCNN()
+    print(net)
+    inp_image = torch.randn((1, 1, 256, 256))
+    print(net(inp_image))
